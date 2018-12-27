@@ -15,6 +15,13 @@
     <p>id<p><input type="TEXT" name="id" value="<?php $id ?>" /></p></p>
     <input type="submit" value ="Inserer">
     </form>
+
+    <form action="page2.php?" method="POST">
+
+    <input type="submit" value ="Suppr">
+    </form>
+
+    
     
     <?php
         include 'cnx.php';
@@ -25,18 +32,20 @@
         
         $angelina=1;
         $pierre=2;
-        $id=1;
+        $id=$_POST['id'];
         $date = date("Y-m-d");
         
+
         
         Print("Nous sommes le $date");
         // écrire la requete
         $sql = $cnx->prepare("INSERT INTO compte (`id`, `montant`, `date`) VALUES ('$id', '$montant', '$date')");
         // on l'execute
         $sql->execute();
-        $sql1 = $cnx->prepare("select * from compte");
+        $sql1 = $cnx->prepare("select * from compte where date > CURDATE() - INTERVAL 30 day");
         // on l'execute
         $sql1->execute();
+       
 
         foreach($sql1->fetchAll(PDO::FETCH_ASSOC) as $ligne)
         {
